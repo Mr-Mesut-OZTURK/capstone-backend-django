@@ -11,9 +11,15 @@ class Category(models.Model):
     description = models.TextField()
     image = models.ImageField(upload_to="categories", blank=True, null=True)
     bg_image_url = models.URLField(max_length=254)
+    slug = models.SlugField(blank=True, null=True, unique=True)
+
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Category, self).save(*args, **kwargs)
 
 # only stuff create and readonly
 
@@ -24,9 +30,15 @@ class Course(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     image = models.ImageField(upload_to="courses", blank=True, null=True)
     bg_image_url = models.URLField(max_length=254)
+    slug = models.SlugField(blank=True, null=True, unique=True)
+
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Course, self).save(*args, **kwargs)
 # stuff and course teachers can create and readonly
 
 
@@ -36,9 +48,15 @@ class Lesson(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     image = models.ImageField(upload_to="lessons", blank=True, null=True)
     bg_image_url = models.URLField(max_length=254)
+    slug = models.SlugField(blank=True, null=True, unique=True)
+
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Lesson, self).save(*args, **kwargs)
 
 # stuff and course teachers can create and course students and course teacher and stuff can read
 
